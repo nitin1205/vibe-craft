@@ -16,7 +16,10 @@ export default function Home() {
   );
   return (
     <div className="p-4 max-w-7xl mx-auto">
-      <Button onClick={() => invoke.mutate({ text: "Test@test.com" })}>
+      <Button
+        disabled={invoke.isPending}
+        onClick={() => invoke.mutate({ text: "Test@test.com" })}
+      >
         Invoke Backgroung job
       </Button>
     </div>
