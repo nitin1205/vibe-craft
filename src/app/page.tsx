@@ -24,7 +24,7 @@ export default function Home() {
         disabled={invoke.isPending}
         onClick={() => invoke.mutate({ value })}
       >
-        Invoke Backgroung job
+        Invoke background job
       </Button>
     </div>
   );
