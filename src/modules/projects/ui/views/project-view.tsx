@@ -2,6 +2,7 @@
 
 import { Suspense, useState } from "react";
 import Link from "next/link";
+import { CodeIcon, CrownIcon, EyeIcon } from "lucide-react";
 
 import {
   ResizableHandle,
@@ -13,9 +14,9 @@ import MessagesContainer from "../components/messages-container";
 import ProjectHeader from "../components/project-header";
 import FragmentWeb from "../components/fragment-web";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CodeIcon, CrownIcon, EyeIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import FileExplorer from "@/components/file-explorer";
+import UserControl from "@/components/user-control";
 
 interface Props {
   projectId: string;
@@ -64,11 +65,12 @@ const Projectview = ({ projectId }: Props) => {
                 </TabsTrigger>
               </TabsList>
               <div className="ml-auto flex items-center gap-x-2">
-                <Button asChild size="sm" variant="default">
+                <Button asChild size="sm" variant="tertiary">
                   <Link href="/pricing">
                     <CrownIcon /> Upgrade
                   </Link>
                 </Button>
+                <UserControl />
               </div>
             </div>
             <TabsContent value="preview">

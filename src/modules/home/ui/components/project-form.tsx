@@ -9,12 +9,15 @@ import { ArrowUpIcon, Loader2Icon } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useClerk } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 
 import { cn } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { Button } from "@/components/ui/button";
 import { Form, FormField } from "@/components/ui/form";
 import { PROJECT_TEMPLATES } from "../../constants";
+import { useCurrentTheme } from "@/hooks/use-current-theme";
 
 const formSchema = z.object({
   value: z
@@ -31,6 +34,9 @@ const ProjectForm = () => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
 
+  const clerk = useClerk();
+  const currentTheme = useCurrentTheme();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { value: "" },
@@ -44,8 +50,17 @@ const ProjectForm = () => {
         // TODO: Inavlidate usage status
       },
       onError: (error) => {
-        // TODO: Redirect to pricing page is specific error
         toast.error(error.message);
+        if (error.data?.code === "UNAUTHORIZED") {
+          clerk.openSignIn({
+            appearance: {
+              theme: currentTheme === "dark" ? dark : undefined,
+              elements: {
+                cardBox: "border! shadow-none! rounded-lg!",
+              },
+            },
+          });
+        }
       },
     })
   );
